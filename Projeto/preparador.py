@@ -15,29 +15,32 @@ class Preparador(Thread):
 
         while(True):
             if(len(self.fila_pedidos) > 0):
-                # IMPLEMENTAR FUNCIONALIDADE DO POSICIONAMENTO DO COPO
+                # IMPLEMENTAR FUNCIONALIDADE DO POSICIONAMENTO DO COPO (COLOCAR)
                 # while(dist > 15):
                 #   sleep(1)
 
                 
                 print(f'Lista de pedidos atual: {self.fila_pedidos}')
                 print('-'*50)
-                print("Iniciando pedido", 1, 0)
 
                 self.componentes.lcd_iniciando_pedido()
 
-                sleep(1)
+                sleep(3)
 
                 self.prepara_pedido_fila(self.fila_pedidos[0])
-
-                print('Pedido finalizado!')
+                
                 self.componentes.lcd_pedido_finalizado()
-
-                self.retira_pedido_finalizado()
+                
+                sleep(3)
+                
+                # IMPLEMENTAR FUNCIONALIDADE DO POSICIONAMENTO DO COPO (RETIRAR)
+                # while(dist > 15):
+                #   sleep(1)
+                
+                self.retira_pedido_finalizado_fila()
 
             else:
                 print(self.fila_pedidos)
-                print('Aguardando novo pedido!')
 
                 self.componentes.lcd_aguardando_novo_pedido()
 
@@ -61,7 +64,7 @@ class Preparador(Thread):
             self.componentes.mini_bomba_despeja_bebida_3(int(pedido['drink3']))
 
 
-    def inclui_novo_pedido(self, novo_pedido):
+    def inclui_novo_pedido_fila(self, novo_pedido):
         """Inclui um novo pedido na lista de pedidos.
 
         Args:
@@ -71,7 +74,7 @@ class Preparador(Thread):
         self.fila_pedidos.append(novo_pedido)
 
 
-    def retira_pedido_finalizado(self):
+    def retira_pedido_finalizado_fila(self):
         """Faz os tratamentos necessários com relação ao pedido que foi finalizado.
         """
         self.fila_pedidos = self.fila_pedidos[1:]

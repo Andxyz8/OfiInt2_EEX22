@@ -10,7 +10,7 @@ def hello_world():
 
     # Escreve o ip do dispositivo que fez a requisição
     # print(request.access_route)
-    preparador_pedidos.inclui_novo_pedido(request.get_json())
+    preparador_pedidos.inclui_novo_pedido_fila(request.get_json())
     
     return '0'
 
