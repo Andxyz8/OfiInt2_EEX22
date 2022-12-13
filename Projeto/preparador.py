@@ -13,18 +13,21 @@ class Preparador(Thread):
         self.confirmado = False
         self.cancelado = False
 
+    def exibe_fila_pedidos_terminal(self):
+        print('-'*65)
+        print(f'Lista de pedidos atual:')
+        
+        for indice, pedido in zip(range(len(self.fila_pedidos)), self.fila_pedidos):
+            print(f'{indice+1} - {pedido}')
+            
+
     def run(self):
         """Processo principal que prepara os pedidos na lista de pedidos."""
 
         while(True):
-            if(len(self.fila_pedidos) > 0):
-                # IMPLEMENTAR FUNCIONALIDADE DO POSICIONAMENTO DO COPO (COLOCAR)
-                # while(dist > 15):
-                #   sleep(1)
-
+            if(len(self.fila_pedidos) > 0):)
                 if(self.confirmado):
-                    print(f'Lista de pedidos atual: {self.fila_pedidos}')
-                    print('-'*50)
+                    self.exibe_fila_pedidos_terminal()                
 
                     self.componentes.lcd_iniciando_pedido()
 
@@ -36,9 +39,6 @@ class Preparador(Thread):
                     
                     sleep(3)
                     
-                    # IMPLEMENTAR FUNCIONALIDADE DO POSICIONAMENTO DO COPO (RETIRAR)
-                    # while(dist > 15):
-                    #   sleep(1)
                     self.confirmado = False
                 
                     self.retira_pedido_finalizado_fila()
@@ -51,7 +51,7 @@ class Preparador(Thread):
                     
                 else:
                     self.componentes.lcd_aguardando_confirmacao()
-                    sleep(3)
+                    sleep(1)
 
             else:
                 print(self.fila_pedidos)
