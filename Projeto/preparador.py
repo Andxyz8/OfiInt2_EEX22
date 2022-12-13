@@ -8,7 +8,10 @@ class Preparador(Thread):
 
         self.componentes = Componentes()
         self.fila_pedidos = []
+        self.fila_ip = []
         self.esta_ligado = False
+        self.confirmado = False
+        self.cancelado = False
 
     def exibe_fila_pedidos_terminal(self):
         print('-'*65)
@@ -22,28 +25,33 @@ class Preparador(Thread):
         """Processo principal que prepara os pedidos na lista de pedidos."""
 
         while(True):
-            if(len(self.fila_pedidos) > 0):
-                # IMPLEMENTAR FUNCIONALIDADE DO POSICIONAMENTO DO COPO (COLOCAR)
-                # while(dist > 15):
-                #   sleep(1)
+            if(len(self.fila_pedidos) > 0):)
+                if(self.confirmado):
+                    self.exibe_fila_pedidos_terminal()                
 
-                self.exibe_fila_pedidos_terminal()                
+                    self.componentes.lcd_iniciando_pedido()
 
-                self.componentes.lcd_iniciando_pedido()
+                    sleep(3)
 
-                sleep(3)
-
-                self.prepara_pedido_fila(self.fila_pedidos[0])
+                    self.prepara_pedido_fila(self.fila_pedidos[0])
+                    
+                    self.componentes.lcd_pedido_finalizado()
+                    
+                    sleep(3)
+                    
+                    self.confirmado = False
                 
-                self.componentes.lcd_pedido_finalizado()
-                
-                sleep(3)
-                
-                # IMPLEMENTAR FUNCIONALIDADE DO POSICIONAMENTO DO COPO (RETIRAR)
-                # while(dist < 15):
-                #   sleep(1)
-                
-                self.retira_pedido_finalizado_fila()
+                    self.retira_pedido_finalizado_fila()
+                    
+                elif (self.cancelado):
+                    self.cancelado = False
+                    self.retira_pedido_finalizado_fila()
+                    self.componentes.lcd_pedido_cancelado()
+                    sleep(3)
+                    
+                else:
+                    self.componentes.lcd_aguardando_confirmacao()
+                    sleep(1)
 
             else:
                 print(self.fila_pedidos)
@@ -70,7 +78,7 @@ class Preparador(Thread):
             self.componentes.mini_bomba_despeja_bebida_3(int(pedido['drink3']))
 
 
-    def inclui_novo_pedido_fila(self, novo_pedido):
+    def inclui_novo_pedido_fila(self, novo_pedido, endereco_ip):
         """Inclui um novo pedido na lista de pedidos.
 
         Args:
@@ -78,12 +86,14 @@ class Preparador(Thread):
         """
 
         self.fila_pedidos.append(novo_pedido)
+        self.fila_ip.append(endereco_ip)
 
 
     def retira_pedido_finalizado_fila(self):
         """Faz os tratamentos necessários com relação ao pedido que foi finalizado.
         """
         self.fila_pedidos = self.fila_pedidos[1:]
+        self.fila_ip = self.fila_ip[1:]
 
 
     def inicia_preparador(self):
@@ -101,3 +111,22 @@ class Preparador(Thread):
             bool: True se o processo já foi iniciado, False caso contrário.
         """
         return self.esta_ligado
+
+    def get_confirmado(self):
+        """Retorna se o primeiro pedido da fila foi confirmado.
+        
+        Returns:
+            bool: True se o pedido já foi confirmado, False caso contrário.
+        """
+        return self.confirmado
+    
+    def confirma_pedido(self) -> None:
+        """Confirma o preparo do primeiro pedido da flia
+        
+        """
+        self.confirmado = True
+        
+    def cancela_pedido(self) -> None:
+        """Cancela o preparo do primeiro pedido da fila
+        """
+        self.cancelado = True
