@@ -50,10 +50,12 @@ class Componentes():
         self.LCD.lcd_display_string("  Aguardando  ", 1, 1)
         self.LCD.lcd_display_string(" novo pedido! ", 2, 1)
         
+        
     def lcd_aguardando_confirmacao(self) -> None:
         self.lcd_limpa_display()
         self.LCD.lcd_display_string("  Aguardando  ", 1, 1)
         self.LCD.lcd_display_string("confirmacao...", 2, 1)
+        
         
     def lcd_pedido_cancelado(self) -> None:
         self.lcd_limpa_display()

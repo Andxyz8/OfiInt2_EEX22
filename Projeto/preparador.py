@@ -25,7 +25,7 @@ class Preparador(Thread):
         """Processo principal que prepara os pedidos na lista de pedidos."""
 
         while(True):
-            if(len(self.fila_pedidos) > 0):)
+            if(len(self.fila_pedidos) > 0):
                 if(self.confirmado):
                     self.exibe_fila_pedidos_terminal()                
 
