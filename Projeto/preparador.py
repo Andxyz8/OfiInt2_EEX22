@@ -10,6 +10,14 @@ class Preparador(Thread):
         self.fila_pedidos = []
         self.esta_ligado = False
 
+    def exibe_fila_pedidos_terminal(self):
+        print('-'*65)
+        print(f'Lista de pedidos atual:')
+        
+        for indice, pedido in zip(range(len(self.fila_pedidos)), self.fila_pedidos):
+            print(f'{indice+1} - {pedido}')
+            
+
     def run(self):
         """Processo principal que prepara os pedidos na lista de pedidos."""
 
@@ -19,9 +27,7 @@ class Preparador(Thread):
                 # while(dist > 15):
                 #   sleep(1)
 
-                
-                print(f'Lista de pedidos atual: {self.fila_pedidos}')
-                print('-'*50)
+                self.exibe_fila_pedidos_terminal()                
 
                 self.componentes.lcd_iniciando_pedido()
 
@@ -34,7 +40,7 @@ class Preparador(Thread):
                 sleep(3)
                 
                 # IMPLEMENTAR FUNCIONALIDADE DO POSICIONAMENTO DO COPO (RETIRAR)
-                # while(dist > 15):
+                # while(dist < 15):
                 #   sleep(1)
                 
                 self.retira_pedido_finalizado_fila()
